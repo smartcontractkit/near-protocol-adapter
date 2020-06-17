@@ -1,0 +1,12 @@
+{
+  "name": "near-protocol-write-adapter",
+  "version": "0.0.1",
+  "description": "NEAR Protocol write adapter to be used by Chainlink node.",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/smartcontractkit/near-protocol-write-adapter",
+    "type": "git"
+  },
+  "author": "Kristijan Rebernisak <kristijan.rebernisak@smartcontract.com>",
+  "license": "MIT"
+}
