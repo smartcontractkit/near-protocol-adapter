@@ -47,7 +47,7 @@ yarn start
 
 ### Unit tests
 
-From the project root run:
+Run from the project root:
 
 ```bash
 yarn test
