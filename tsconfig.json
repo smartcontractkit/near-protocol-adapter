@@ -15,5 +15,5 @@
     "es2020.symbol.wellknown"
   ],
   "include": ["src/**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "**/*.spec.ts", "**/*.test.ts"]
 }
