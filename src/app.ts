@@ -42,8 +42,8 @@ app.get(
     const { keyStore } = connectionConfig.deps
     const keyPair = await keyStore.getKey(networkId, masterAccount)
     res.send({
-      accountId: masterAccount,
-      accessKey: keyPair.getPublicKey().toString(),
+      account_id: masterAccount,
+      access_key: keyPair.getPublicKey().toString(),
     })
   }),
 )

@@ -60,7 +60,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:*, @types/chai@npm:^4.2.11":
+"@types/chai-http@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "@types/chai-http@npm:4.2.0"
+  dependencies:
+    chai-http: "*"
+  checksum: 3e41119030abd6e58bbf23c42dc3b1b456e7ba5a2670e9306eca8461ec78f995c0b06f440ed8a730a10299f635587e704d9eeb010bfeb6db66a35465885caa33
+  languageName: node
+  linkType: hard
+
+"@types/chai@npm:*, @types/chai@npm:4, @types/chai@npm:^4.2.11":
   version: 4.2.11
   resolution: "@types/chai@npm:4.2.11"
   checksum: f86ca92ea04c20c4b2520a254686674d53554958621672a06d3f1568122d0be9f77ffe7445e62b85b6b87d194110690be120d9161a9934c8beeee141f2c024cc
@@ -80,6 +89,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 6414495b5995fcb8274feb8b1f113c0685160ea7781e75c638325c6e7a0c226d0c554fa622fe3d278470358c99f68a5994fe49e1b104736f76f3fb3b509e375f
+  languageName: node
+  linkType: hard
+
+"@types/cookiejar@npm:*":
+  version: 2.1.1
+  resolution: "@types/cookiejar@npm:2.1.1"
+  checksum: 822b514900c457756479f42b382efb57437e68352acead76f47bc0c0bc9eecf0df2623fd4506111058437b41552d0fb74d4c14fa5d033d642ca952dffb697ed3
   languageName: node
   linkType: hard
 
@@ -169,6 +185,16 @@ __metadata:
     "@types/express-serve-static-core": "*"
     "@types/mime": "*"
   checksum: 9b9f2a91248ccdc13f2ca658d276bac6b7c7f6907dcb3c9b1602d4d239438717323226b1469788b351967ae29d25663fa66328668923e674246b20d5df4f3e88
+  languageName: node
+  linkType: hard
+
+"@types/superagent@npm:^3.8.3":
+  version: 3.8.7
+  resolution: "@types/superagent@npm:3.8.7"
+  dependencies:
+    "@types/cookiejar": "*"
+    "@types/node": "*"
+  checksum: d9f798a6420261966760370ba73114cdba3ac83e915ad80f5fe9b07eeddc1c3a7a45866c08e56e78c03583bd53a91fb9d670ce336f519e02e394879125d9c589
   languageName: node
   linkType: hard
 
@@ -636,6 +662,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai-http@npm:*, chai-http@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "chai-http@npm:4.3.0"
+  dependencies:
+    "@types/chai": 4
+    "@types/superagent": ^3.8.3
+    cookiejar: ^2.1.1
+    is-ip: ^2.0.0
+    methods: ^1.1.2
+    qs: ^6.5.1
+    superagent: ^3.7.0
+  checksum: e5918d80aa518278a078ca48ce9cb7f95e547cc0a5e8b191e904e6fc0adeb7c46871776f3155d734f79d650f86ed8bb73692bd548b001700aa1546a78a17c08e
+  languageName: node
+  linkType: hard
+
 "chai@npm:^4.2.0":
   version: 4.2.0
   resolution: "chai@npm:4.2.0"
@@ -834,6 +875,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"component-emitter@npm:^1.2.0":
+  version: 1.3.0
+  resolution: "component-emitter@npm:1.3.0"
+  checksum: fc4edbf1014f0aed88dcec33ca02d2938734e428423f640d8a3f94975615b8e8c506c19e29b93949637c5a281353e75fa79e299e0d57732f42a9fe346cb2cad6
+  languageName: node
+  linkType: hard
+
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -875,6 +923,13 @@ __metadata:
   version: 0.4.0
   resolution: "cookie@npm:0.4.0"
   checksum: 7aaef4b642c533600fdd001d963a507dfcd814267503374e51d9743475d024feeff8b0b4ddd0777a25791a2efbdfd8bc4a0fe0696104efa195e8f8584807d410
+  languageName: node
+  linkType: hard
+
+"cookiejar@npm:^2.1.0, cookiejar@npm:^2.1.1":
+  version: 2.1.2
+  resolution: "cookiejar@npm:2.1.2"
+  checksum: 4c733c15c190798bc1fb724f3044959cabc1565dee7dfc00f99219c7a4189b21cc243ccab52e0708994923f684189a4afa6b01b6b157f8c99273f1001602ac6f
   languageName: node
   linkType: hard
 
@@ -927,7 +982,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:3.2.6":
+"debug@npm:3.2.6, debug@npm:^3.1.0":
   version: 3.2.6
   resolution: "debug@npm:3.2.6"
   dependencies:
@@ -1408,7 +1463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"extend@npm:~3.0.2":
+"extend@npm:^3.0.0, extend@npm:~3.0.2":
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
   checksum: 1406da1f0c4b00b839497e4cdd0ec4303ce2ae349144b7c28064a5073c93ce8c08da4e8fb1bc5cb459ffcdff30a35fc0fe54344eb88320e70100c1baea6f195c
@@ -1567,6 +1622,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"form-data@npm:^2.3.1":
+  version: 2.5.1
+  resolution: "form-data@npm:2.5.1"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.6
+    mime-types: ^2.1.12
+  checksum: c46ee9a14a8678b6e0dfafabc96e25237d9f11ced9c51cd371a2b3448f6a3f2fa684b3bbbb35911bae8f5448b3f3c48c73f7f2be791a4ae5aee0eb0ab3cdfec2
+  languageName: node
+  linkType: hard
+
 "form-data@npm:~2.3.2":
   version: 2.3.3
   resolution: "form-data@npm:2.3.3"
@@ -1575,6 +1641,13 @@ __metadata:
     combined-stream: ^1.0.6
     mime-types: ^2.1.12
   checksum: 862e686b105634222db77138d5f5ae08ba85f88c04925de5be86b2b9d03cf671d86566ad10f1dd5217634c0f1634069dfc1a663a1cc13e8fbac0ce8f670ad070
+  languageName: node
+  linkType: hard
+
+"formidable@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "formidable@npm:1.2.2"
+  checksum: 9fe5ef38d5881ac16cc8ca78bd3229fbf32b10e0fd3b718ec20f86ea1de7302aa0ffcfa9a9163cec02fc3f825faf9d0533f24539bb20ae6d73b580b526c25edb
   languageName: node
   linkType: hard
 
@@ -1961,6 +2034,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"ip-regex@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "ip-regex@npm:2.1.0"
+  checksum: 2fd2190ada81b55a8a6f913bcb5a6fd6ff9da127905b4c01521f09a1d391e86d415dfe8c131ed2989d536949bb2f9654a71b9fa6f7ae2ac3ae6111b2026cc902
+  languageName: node
+  linkType: hard
+
 "ipaddr.js@npm:1.9.1":
   version: 1.9.1
   resolution: "ipaddr.js@npm:1.9.1"
@@ -2048,6 +2128,15 @@ fsevents@~2.1.2:
   dependencies:
     is-extglob: ^2.1.1
   checksum: 98cd4f715f0fb81da34aa6c8be4a5ef02d8cfac3ebc885153012abc2a0410df5a572f9d0393134fcba9192c7a845da96142c5f74a3c02787efe178ed798615e6
+  languageName: node
+  linkType: hard
+
+"is-ip@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "is-ip@npm:2.0.0"
+  dependencies:
+    ip-regex: ^2.0.0
+  checksum: be9259daa18f4d958a4d8d84ca703ce1ad810cdc929d14f22ea12ee892198200ed1d91f27418f8d4c4588e07733d83fe53eb5ffc5104f39a2008f33bcccc6bce
   languageName: node
   linkType: hard
 
@@ -2406,7 +2495,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"methods@npm:~1.1.2":
+"methods@npm:^1.1.1, methods@npm:^1.1.2, methods@npm:~1.1.2":
   version: 1.1.2
   resolution: "methods@npm:1.1.2"
   checksum: 450e4ea0fd4a0f3de8c0593d753c7d6c8f2ee49766f5ef35c68cc2ac41699d5e295b7d6330fc2b7271b8569a07857e3eb0b5df0599a353c5808265b4b5066168
@@ -2439,7 +2528,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"mime@npm:1.6.0":
+"mime@npm:1.6.0, mime@npm:^1.4.1":
   version: 1.6.0
   resolution: "mime@npm:1.6.0"
   bin:
@@ -2614,6 +2703,7 @@ fsevents@~2.1.2:
   dependencies:
     "@types/chai": ^4.2.11
     "@types/chai-as-promised": ^7.1.2
+    "@types/chai-http": ^4.2.0
     "@types/express": ^4.17.6
     "@types/mocha": ^7.0.2
     "@types/node": ^14.0.13
@@ -2621,6 +2711,7 @@ fsevents@~2.1.2:
     "@typescript-eslint/parser": ^3.3.0
     chai: ^4.2.0
     chai-as-promised: ^7.1.1
+    chai-http: ^4.3.0
     eslint: ^7.2.0
     eslint-config-prettier: ^6.11.0
     eslint-plugin-prettier: ^3.1.4
@@ -3085,6 +3176,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"qs@npm:^6.5.1":
+  version: 6.9.4
+  resolution: "qs@npm:6.9.4"
+  checksum: beba62d1e1c66e9888cc08a488eb95771c252a92289a96bff4b767a49e4e7afe9487d7ee3269b856292d8281b855ac5eac927c2e77f845e407ee4fe54743fea7
+  languageName: node
+  linkType: hard
+
 "qs@npm:~6.5.2":
   version: 6.5.2
   resolution: "qs@npm:6.5.2"
@@ -3111,7 +3209,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.0.6":
+"readable-stream@npm:^2.0.6, readable-stream@npm:^2.3.5":
   version: 2.3.7
   resolution: "readable-stream@npm:2.3.7"
   dependencies:
@@ -3578,6 +3676,24 @@ fsevents@~2.1.2:
   version: 3.1.0
   resolution: "strip-json-comments@npm:3.1.0"
   checksum: 5c272f2c030937c99edd8c02f120c2e5cb49ab41e82db689167e3dc84413ee39dbda9f0476b5345827d9f408fd9ffc81b3c0160253ec599d929ac35fa7ce0260
+  languageName: node
+  linkType: hard
+
+"superagent@npm:^3.7.0":
+  version: 3.8.3
+  resolution: "superagent@npm:3.8.3"
+  dependencies:
+    component-emitter: ^1.2.0
+    cookiejar: ^2.1.0
+    debug: ^3.1.0
+    extend: ^3.0.0
+    form-data: ^2.3.1
+    formidable: ^1.2.0
+    methods: ^1.1.1
+    mime: ^1.4.1
+    qs: ^6.5.1
+    readable-stream: ^2.3.5
+  checksum: 6a2151f7c41356083834ec1d4ba93b9e43b76d1691f7172c01e61c33755967d9f2fa664198988cc8e3de6cee8b63351585ba2d6161cd5e54f26003c818e5d5fc
   languageName: node
   linkType: hard
 
