@@ -49,6 +49,10 @@ function getConfig(env: string) {
   }
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export const cloneWithoutSecrets = (config: any) =>
+  (({ keyStore, deps, ...o }) => o)(config)
+
 export default (
   env: string | undefined,
   accountId: string,
@@ -62,5 +66,6 @@ export default (
     ...config,
     deps: { keyStore },
     masterAccount: accountId,
+    masterAccessKey: keyPair.getPublicKey().toString(),
   }
 }

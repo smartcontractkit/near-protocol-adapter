@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 
 import * as nearApi from 'near-api-js'
 
-import config from './config'
+import config, { cloneWithoutSecrets } from './config'
 import {
   ENV_PORT,
   ENV_NODE_ENV,
@@ -18,7 +18,7 @@ const connectionConfig = config(
   getRequiredEnv(ENV_PRIVATE_KEY),
 )
 console.log('NEAR Protocol connection configuration:')
-console.log(connectionConfig)
+console.log(cloneWithoutSecrets(connectionConfig))
 
 const app = express()
 const port = 3000 || process.env[ENV_PORT]
