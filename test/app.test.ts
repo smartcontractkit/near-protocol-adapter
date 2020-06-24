@@ -16,10 +16,8 @@ import {
 describe('incorrect app config', () => {
   context('when no env is set', () => {
     it(`throws RequiredEnvError for ${ENV_ACCOUNT_ID}`, () => {
-      return expect(import('../src/app')).to.be.rejectedWith(
-        RequiredEnvError,
-        ENV_ACCOUNT_ID,
-      )
+      return expect(import('../src/app')) //
+        .to.be.rejectedWith(RequiredEnvError, ENV_ACCOUNT_ID)
     })
   })
 
@@ -29,10 +27,8 @@ describe('incorrect app config', () => {
     })
 
     it(`throws RequiredEnvError for ${ENV_PRIVATE_KEY}`, () => {
-      return expect(import('../src/app')).to.be.rejectedWith(
-        RequiredEnvError,
-        ENV_PRIVATE_KEY,
-      )
+      return expect(import('../src/app')) //
+        .to.be.rejectedWith(RequiredEnvError, ENV_PRIVATE_KEY)
     })
   })
 
@@ -45,27 +41,21 @@ describe('incorrect app config', () => {
 
       it('throws Error because "Unknown curve"', () => {
         process.env[ENV_PRIVATE_KEY] = 'dummy:key'
-        return expect(import('../src/app')).to.be.rejectedWith(
-          Error,
-          'Unknown curve:',
-        )
+        return expect(import('../src/app')) //
+          .to.be.rejectedWith(Error, 'Unknown curve:')
       })
 
       it('throws Error because "bad secret key size"', () => {
         process.env[ENV_PRIVATE_KEY] = '12345'
-        return expect(import('../src/app')).to.be.rejectedWith(
-          Error,
-          'bad secret key size',
-        )
+        return expect(import('../src/app')) //
+          .to.be.rejectedWith(Error, 'bad secret key size')
       })
 
       it('throws Error because "bad secret key size" for ed25519 curve', () => {
         process.env[ENV_PRIVATE_KEY] =
           'ed25519:EsjyvmBb2ESGiyjPHMBUnTGCe1P6hPjmxxY2b2hrTBAv'
-        return expect(import('../src/app')).to.be.rejectedWith(
-          Error,
-          'bad secret key size',
-        )
+        return expect(import('../src/app')) //
+          .to.be.rejectedWith(Error, 'bad secret key size')
       })
     },
   )

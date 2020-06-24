@@ -4,7 +4,7 @@ This service is used by a Chainlink node as an external adapter for writing to [
 
 The external adapter allows you to configure an endpoint, account and private key to sign and send transactions.
 
-## Dependencies
+## Prerequisite
 
 - Yarn v1.22+: You will need to have [Yarn v1.22+ installed](https://yarnpkg.com/getting-started/install) locally.
   - This repo also activates the Berry release (codename for the Yarn 2). To switch between versions use the `yarnPath` release path in [.yarnrc.yml](.yarnrc.yml) file, and run `yarn install` because of differences in `yarn.lock` file.
@@ -16,6 +16,27 @@ If using Yarn v1.22+ (default), or when switching between versions (from v1.22+ 
 
 ```bash
 yarn install
+```
+
+## Set up NEAR accout
+
+### Prerequisite
+
+- NEAR account: Please create one with [NEAR Wallet](https://wallet.nearprotocol.com).
+- NEAR Shell: Please install it following the [NEAR docs instructions](https://docs.near.org/docs/development/near-shell).
+
+### NEAR login
+
+In the project root, login with `near-shell` by following the instructions after this command:
+
+```bash
+near login
+```
+
+This step is required to get to the NEAR account private key which can be found at `~/.near-credentials/default/${ACCOUNT_ID}.json`:
+
+```
+{"account_id":"${ACCOUNT_ID}","private_key":"ed25519:..."}
 ```
 
 ## Start
