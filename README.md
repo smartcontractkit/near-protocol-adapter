@@ -36,8 +36,8 @@ near login
 
 This step is required to get to the NEAR account private key which can be found at `~/.near-credentials/default/${ACCOUNT_ID}.json`:
 
-```
-{"account_id":"${ACCOUNT_ID}","private_key":"ed25519:..."}
+```json
+{ "account_id": "${ACCOUNT_ID}", "private_key": "ed25519:..." }
 ```
 
 ## Start
