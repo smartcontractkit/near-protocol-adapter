@@ -88,8 +88,8 @@ describe('incorrect app config', () => {
         'application/json; charset=utf-8',
       )
       expect(res.body).not.null
-      expect(res.body.account_id).to.equal('dummy.testnet')
-      expect(res.body.access_key).to.equal(
+      expect(res.body.accountId).to.equal('dummy.testnet')
+      expect(res.body.accessKey).to.equal(
         'ed25519:BZGHidhWFSKXUmHo2d6arxeJgthxECyFdgjW4P2GH4J4',
       )
     })

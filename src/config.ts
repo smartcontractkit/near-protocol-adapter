@@ -72,17 +72,26 @@ function getConfig(env: string): ConnectConfig {
 export const cloneWithoutSecrets = (config: NearConfig): NearConfig =>
   (({ keyStore, deps, ...o }) => o)(config)
 
-export default (
+export const configFromEnv = (
   env: string | undefined,
   accountId: string,
   pk: string,
 ): NearAccountConfig => {
   const config = getConfig(env || DEFAULT_ENV_NODE_ENV)
+  return configFrom(config, accountId, pk)
+}
+
+export const configFrom = (
+  connectConfig: ConnectConfig,
+  accountId: string,
+  pk: string,
+): NearAccountConfig => {
   const keyPair = KeyPair.fromString(pk)
-  const keyStore = new SingleKeyStore(config.networkId, accountId, keyPair)
+  const { networkId } = connectConfig
+  const keyStore = new SingleKeyStore(networkId, accountId, keyPair)
 
   return {
-    ...config,
+    ...connectConfig,
     deps: { keyStore },
     masterAccount: accountId,
     masterAccessKey: keyPair.getPublicKey().toString(),

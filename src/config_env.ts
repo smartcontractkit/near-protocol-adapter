@@ -1,5 +1,7 @@
 export const ENV_PORT = 'PORT'
 export const ENV_NODE_ENV = 'NODE_ENV'
+export const ENV_NETWORK_ID = 'NETWORK_ID'
+export const ENV_NODE_URL = 'NODE_URL'
 export const ENV_ACCOUNT_ID = 'ACCOUNT_ID'
 export const ENV_PRIVATE_KEY = 'PRIVATE_KEY'
 

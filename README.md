@@ -47,7 +47,9 @@ Supported environment variables:
 - ACCOUNT_ID: NEAR account that this service will use
 - PRIVATE_KEY: NEAR account private key
 - PORT: (optional) defaults to `3000`
-- NODE_ENV: (optional) defaults to `development`
+- NODE_ENV: (optional) one of `[production|mainnet|development|testnet|devnet|betanet|local]`, defaults to `development`
+- NETWORK_ID: (optional) custom network id, `NODE_URL` must also be set
+- NODE_URL: (optional) custom node url, `NETWORK_ID` must also be set
 
 Set the required environment, and run from the project root:
 
@@ -62,6 +64,17 @@ env \
   ACCOUNT_ID=dummy.testnet \
   PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
   NODE_ENV=testnet \
+yarn start
+```
+
+Or for a custom connection:
+
+```bash
+env \
+  ACCOUNT_ID=dummy.acmenet \
+  PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+  NETWORK_ID=acmenet \
+  NODE_URL=https://rpc.acmenet.acme.org \
 yarn start
 ```
 
