@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised'
 chai.use(chaiAsPromised)
 const { expect } = chai
 
-import config from '../src/config'
+import { configFromEnv } from '../src/config'
 
 describe('config', () => {
   const accountId = 'dummy.testnet'
@@ -13,7 +13,7 @@ describe('config', () => {
 
     it('throws Error because "Unknown environment"', () => {
       const pk = 'dummy:key'
-      expect(() => config(env, accountId, pk)) //
+      expect(() => configFromEnv(env, accountId, pk)) //
         .throws(Error, 'Unknown environment')
     })
   })
@@ -23,18 +23,19 @@ describe('config', () => {
 
     it('throws Error because "Unknown curve"', () => {
       const pk = 'dummy:key'
-      expect(() => config(env, accountId, pk)).throws(Error, 'Unknown curve:')
+      expect(() => configFromEnv(env, accountId, pk)) //
+        .throws(Error, 'Unknown curve:')
     })
 
     it('throws Error because "bad secret key size"', () => {
       const pk = '12345'
-      expect(() => config(env, accountId, pk)) //
+      expect(() => configFromEnv(env, accountId, pk)) //
         .throws(Error, 'bad secret key size')
     })
 
     it('throws Error because "bad secret key size" for ed25519 curve', () => {
       const pk = 'ed25519:EsjyvmBb2ESGiyjPHMBUnTGCe1P6hPjmxxY2b2hrTBAv'
-      expect(() => config(env, accountId, pk)) //
+      expect(() => configFromEnv(env, accountId, pk)) //
         .throws(Error, 'bad secret key size')
     })
   })
@@ -49,7 +50,7 @@ describe('config', () => {
       _networkId: string,
       _nodeUrl: string,
     ) => {
-      const c = config(_env, accountId, private_key)
+      const c = configFromEnv(_env, accountId, private_key)
       expect(c).not.null
       expect(c.networkId).not.null
       expect(c.networkId).to.equal(_networkId)

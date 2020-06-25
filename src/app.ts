@@ -5,20 +5,31 @@ import BN from 'bn.js'
 import * as nearApi from 'near-api-js'
 
 import { handleNotFound, handleErrors, BadRequest } from './errors'
-import config, { cloneWithoutSecrets } from './config'
+import { configFrom, configFromEnv, cloneWithoutSecrets } from './config'
 import {
   ENV_PORT,
   ENV_NODE_ENV,
+  ENV_NETWORK_ID,
+  ENV_NODE_URL,
   ENV_ACCOUNT_ID,
   ENV_PRIVATE_KEY,
   getRequiredEnv,
 } from './config_env'
 
-const connectionConfig = config(
-  process.env[ENV_NODE_ENV],
-  getRequiredEnv(ENV_ACCOUNT_ID),
-  getRequiredEnv(ENV_PRIVATE_KEY),
-)
+const connectionConfig = (function () {
+  const { env } = process
+  const accountId = getRequiredEnv(ENV_ACCOUNT_ID)
+  const pk = getRequiredEnv(ENV_PRIVATE_KEY)
+  if (env[ENV_NETWORK_ID] && env[ENV_NODE_URL]) {
+    const connectConfig = {
+      networkId: env[ENV_NETWORK_ID] as string,
+      nodeUrl: env[ENV_NODE_URL] as string,
+    }
+    return configFrom(connectConfig, accountId, pk)
+  }
+  return configFromEnv(process.env[ENV_NODE_ENV], accountId, pk)
+})()
+
 console.log('NEAR Protocol connection configuration:')
 console.log(cloneWithoutSecrets(connectionConfig))
 
