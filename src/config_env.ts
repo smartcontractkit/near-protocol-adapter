@@ -3,9 +3,7 @@ export const ENV_NODE_ENV = 'NODE_ENV'
 export const ENV_ACCOUNT_ID = 'ACCOUNT_ID'
 export const ENV_PRIVATE_KEY = 'PRIVATE_KEY'
 
-/**
- * Custom error for required env variable.
- */
+// Custom error for required env variable.
 export class RequiredEnvError extends Error {
   constructor(name: string) {
     super(`Please set the required env ${name}.`)

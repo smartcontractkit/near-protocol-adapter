@@ -1,8 +1,10 @@
+import { Request, Response, NextFunction } from 'express'
 import { utils } from 'near-api-js'
 
 const { ServerError } = utils.rpc_errors
 
 const CODE_CLIENT_ERROR = 400
+const CODE_CLIENT_ERROR_NOT_FOUND = 404
 const CODE_SERVER_ERROR = 500
 
 export class GeneralError extends Error {
@@ -20,11 +22,38 @@ export class BadRequest extends GeneralError {
   }
 }
 
-export const handleErrors = (err: Error, req: any, res: any, next: any) => {
+type ErrorResponse = {
+  statusCode: number
+  status: string
+  type?: string
+  message?: string
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export const handleNotFound = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Response<ErrorResponse> => {
+  return res.status(CODE_CLIENT_ERROR_NOT_FOUND).json({
+    statusCode: CODE_CLIENT_ERROR_NOT_FOUND,
+    status: 'Error',
+    type: 'NotFound',
+    message: '404 Not Found',
+  })
+}
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export const handleErrors = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Response<ErrorResponse> => {
   // Log the error to the console
   console.error(err)
 
-  const errorResponese = {
+  const errorResponse = {
     status: err.name,
     type: err instanceof ServerError ? err.type : 'UntypedError',
     message: err.message,
@@ -33,12 +62,12 @@ export const handleErrors = (err: Error, req: any, res: any, next: any) => {
   if (err instanceof GeneralError) {
     return res.status(err.statusCode).json({
       statusCode: err.statusCode,
-      ...errorResponese,
+      ...errorResponse,
     })
   }
 
   return res.status(CODE_SERVER_ERROR).json({
     statusCode: CODE_SERVER_ERROR,
-    ...errorResponese,
+    ...errorResponse,
   })
 }

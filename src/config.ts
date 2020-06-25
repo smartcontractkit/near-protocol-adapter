@@ -1,9 +1,28 @@
-import { KeyPair } from 'near-api-js'
+import { keyStores, KeyPair } from 'near-api-js'
 import { SingleKeyStore } from './single_key_store'
 
 const DEFAULT_ENV_NODE_ENV = 'development'
 
-function getConfig(env: string) {
+type KeyStore = keyStores.KeyStore
+type NearConfig = {
+  keyStore?: KeyStore
+  deps?: { keyStore: KeyStore }
+  helperUrl?: string
+  masterAccount?: string
+  walletUrl?: string
+  networkId: string
+  nodeUrl: string
+}
+type ConnectConfig = NearConfig & {
+  keyPath?: string
+}
+type NearAccountConfig = NearConfig & {
+  deps: { keyStore: KeyStore }
+  masterAccount: string
+  masterAccessKey: string
+}
+
+function getConfig(env: string): ConnectConfig {
   switch (env) {
     case 'production':
     case 'mainnet':
@@ -50,14 +69,14 @@ function getConfig(env: string) {
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export const cloneWithoutSecrets = (config: any) =>
+export const cloneWithoutSecrets = (config: NearConfig): NearConfig =>
   (({ keyStore, deps, ...o }) => o)(config)
 
 export default (
   env: string | undefined,
   accountId: string,
   pk: string,
-): any => {
+): NearAccountConfig => {
   const config = getConfig(env || DEFAULT_ENV_NODE_ENV)
   const keyPair = KeyPair.fromString(pk)
   const keyStore = new SingleKeyStore(config.networkId, accountId, keyPair)
