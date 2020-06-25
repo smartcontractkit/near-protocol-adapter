@@ -63,11 +63,11 @@ app.get(
 app.get(
   '/view',
   asyncHandler(async (req, res) => {
-    const account = await connectWithMasterAccount()
     const { contractId, methodName, args } = req.body
     if (!contractId || !methodName)
       throw new BadRequest('Missing required fields: contractId or methodName')
 
+    const account = await connectWithMasterAccount()
     const result = await account.viewFunction(
       contractId as string,
       methodName as string,
@@ -85,11 +85,11 @@ app.get(
 app.post(
   '/call',
   asyncHandler(async (req, res) => {
-    const account = await connectWithMasterAccount()
     const { contractId, methodName, args, gas, amount } = req.body
     if (!contractId || !methodName)
       throw new BadRequest('Missing required fields: contractId or methodName')
 
+    const account = await connectWithMasterAccount()
     const result = await account.functionCall(
       contractId as string,
       methodName as string,
