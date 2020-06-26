@@ -46,7 +46,7 @@ Supported environment variables:
 
 - ACCOUNT_ID: NEAR account that this service will use
 - PRIVATE_KEY: NEAR account private key
-- PORT: (optional) defaults to `3000`
+- EA_PORT: (optional) defaults to `3000`
 - NODE_ENV: (optional) one of `[production|mainnet|development|testnet|devnet|betanet|local]`, defaults to `development`
 - NETWORK_ID: (optional) custom network id, `NODE_URL` must also be set
 - NODE_URL: (optional) custom node url, `NETWORK_ID` must also be set
@@ -333,6 +333,57 @@ Example output:
       "proof": []
     }
   },
+  "statusCode": 200
+}
+```
+
+## Chainlink node integration
+
+The Chainlink node expects a specific adapter API - we only expose the call function (send tx) on `/` endpoint.
+
+To start, build the Docker image:
+
+```bash
+docker build -t near-protocol-adapter .
+```
+
+Run the Docker container:
+
+```bash
+docker run -d \
+    --name near-protocol-adapter \
+    -p 3000:3000 \
+    -e EA_PORT=3000 \
+    -e ACCOUNT_ID=dummy.testnet \
+    -e PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+    -e NODE_ENV=testnet \
+    near-protocol-adapter
+```
+
+In this configuration the `/` endpoint expects a slightly different input, we need to include the job spec id:
+
+```json
+{
+  "id": 1, // job spec id
+  "data": {...} // input to our call function (as before)
+}
+```
+
+For example, incrementing a [counter](https://github.com/near-examples/counter):
+
+```json
+echo '{"id": 1, "data": {"contractId": "counter.testnet", "methodName": "incrementCounter", "args": {"value": 1}, "gas": 5000000000000, "amount": 50}}' | http POST :3000/
+```
+
+Output:
+
+```json
+{
+  "data": {
+    "result": "6yTpkCW3UqVtpGj766Wvr73zEambzL2n44CDYiB4TpVP" // tx hash
+  },
+  "jobRunID": 1,
+  "result": "6yTpkCW3UqVtpGj766Wvr73zEambzL2n44CDYiB4TpVP", // tx hash
   "statusCode": 200
 }
 ```

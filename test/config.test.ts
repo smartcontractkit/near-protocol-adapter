@@ -1,104 +1,62 @@
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
-chai.use(chaiAsPromised)
-const { expect } = chai
+import { expect } from 'chai'
 
-import { configFromEnv } from '../src/config'
+import {
+  ENV_ACCOUNT_ID,
+  ENV_PRIVATE_KEY,
+  RequiredEnvError,
+  connectionConfig,
+  getRequiredEnv,
+} from '../src/config'
 
-describe('config', () => {
-  const accountId = 'dummy.testnet'
+describe('incorrect app config', () => {
+  beforeEach(() => {
+    delete process.env[ENV_ACCOUNT_ID]
+    delete process.env[ENV_PRIVATE_KEY]
+  })
 
-  context(`when invalid environment`, () => {
-    const env = 'dummy'
-
-    it('throws Error because "Unknown environment"', () => {
-      const pk = 'dummy:key'
-      expect(() => configFromEnv(env, accountId, pk)) //
-        .throws(Error, 'Unknown environment')
+  context('when no env is set', () => {
+    it(`throws RequiredEnvError for ${ENV_ACCOUNT_ID}`, () => {
+      expect(() => getRequiredEnv(ENV_ACCOUNT_ID)) //
+        .throws(RequiredEnvError, ENV_ACCOUNT_ID)
     })
   })
 
-  context(`when invalid private key`, () => {
-    const env = 'development'
-
-    it('throws Error because "Unknown curve"', () => {
-      const pk = 'dummy:key'
-      expect(() => configFromEnv(env, accountId, pk)) //
-        .throws(Error, 'Unknown curve:')
+  context(`when ${ENV_ACCOUNT_ID} is set but not ${ENV_PRIVATE_KEY}`, () => {
+    beforeEach(() => {
+      process.env[ENV_ACCOUNT_ID] = 'dummy.testnet'
     })
 
-    it('throws Error because "bad secret key size"', () => {
-      const pk = '12345'
-      expect(() => configFromEnv(env, accountId, pk)) //
-        .throws(Error, 'bad secret key size')
-    })
-
-    it('throws Error because "bad secret key size" for ed25519 curve', () => {
-      const pk = 'ed25519:EsjyvmBb2ESGiyjPHMBUnTGCe1P6hPjmxxY2b2hrTBAv'
-      expect(() => configFromEnv(env, accountId, pk)) //
-        .throws(Error, 'bad secret key size')
+    it(`throws RequiredEnvError for ${ENV_PRIVATE_KEY}`, () => {
+      expect(() => connectionConfig()) //
+        .throws(RequiredEnvError, ENV_PRIVATE_KEY)
     })
   })
 
-  context(`when valid params`, () => {
-    const private_key =
-      'ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2'
-    const public_key = 'ed25519:BZGHidhWFSKXUmHo2d6arxeJgthxECyFdgjW4P2GH4J4'
+  context(
+    `when ${ENV_ACCOUNT_ID} is set but invalid ${ENV_PRIVATE_KEY}`,
+    () => {
+      beforeEach(() => {
+        process.env[ENV_ACCOUNT_ID] = 'dummy.testnet'
+      })
 
-    const _testConfig = async (
-      _env: string | undefined,
-      _networkId: string,
-      _nodeUrl: string,
-    ) => {
-      const c = configFromEnv(_env, accountId, private_key)
-      expect(c).not.null
-      expect(c.networkId).not.null
-      expect(c.networkId).to.equal(_networkId)
-      expect(c.nodeUrl).not.null
-      expect(c.nodeUrl).to.equal(_nodeUrl)
-      expect(c.masterAccount).not.null
-      expect(c.masterAccount).to.equal(accountId)
-      expect(c.deps).not.null
-      expect(c.deps.keyStore).not.null
+      it('throws Error because "Unknown curve"', () => {
+        process.env[ENV_PRIVATE_KEY] = 'dummy:key'
+        expect(() => connectionConfig()) //
+          .throws(Error, 'Unknown curve:')
+      })
 
-      const key = await c.deps.keyStore.getKey(_networkId, accountId)
-      expect(key).not.null
-      expect(key.getPublicKey().toString()).to.equal(public_key)
-    }
+      it('throws Error because "bad secret key size"', () => {
+        process.env[ENV_PRIVATE_KEY] = '12345'
+        expect(() => connectionConfig()) //
+          .throws(Error, 'bad secret key size')
+      })
 
-    it('configuration is successful for undefined"', async () => {
-      const env = undefined
-      const networkId = 'default'
-      const nodeUrl = 'https://rpc.testnet.near.org'
-      _testConfig(env, networkId, nodeUrl)
-    })
-
-    it('configuration is successful for development"', async () => {
-      const env = 'development'
-      const networkId = 'default'
-      const nodeUrl = 'https://rpc.testnet.near.org'
-      _testConfig(env, networkId, nodeUrl)
-    })
-
-    it('configuration is successful for testnet"', async () => {
-      const env = 'testnet'
-      const networkId = 'default'
-      const nodeUrl = 'https://rpc.testnet.near.org'
-      _testConfig(env, networkId, nodeUrl)
-    })
-
-    it('configuration is successful for production"', async () => {
-      const env = 'production'
-      const networkId = 'mainnet'
-      const nodeUrl = 'https://rpc.mainnet.near.org'
-      _testConfig(env, networkId, nodeUrl)
-    })
-
-    it('configuration is successful for mainnet"', async () => {
-      const env = 'mainnet'
-      const networkId = 'mainnet'
-      const nodeUrl = 'https://rpc.mainnet.near.org'
-      _testConfig(env, networkId, nodeUrl)
-    })
-  })
+      it('throws Error because "bad secret key size" for ed25519 curve', () => {
+        process.env[ENV_PRIVATE_KEY] =
+          'ed25519:EsjyvmBb2ESGiyjPHMBUnTGCe1P6hPjmxxY2b2hrTBAv'
+        expect(() => connectionConfig()) //
+          .throws(Error, 'bad secret key size')
+      })
+    },
+  )
 })

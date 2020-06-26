@@ -1,99 +1,41 @@
-import { keyStores, KeyPair } from 'near-api-js'
-import { SingleKeyStore } from './single_key_store'
+import { configFrom, configFromEnv, NearAccountConfig } from './near/config'
 
-const DEFAULT_ENV_NODE_ENV = 'development'
+export const ENV_PORT = 'EA_PORT'
+export const ENV_NODE_ENV = 'NODE_ENV'
+export const ENV_NETWORK_ID = 'NETWORK_ID'
+export const ENV_NODE_URL = 'NODE_URL'
+export const ENV_ACCOUNT_ID = 'ACCOUNT_ID'
+export const ENV_PRIVATE_KEY = 'PRIVATE_KEY'
 
-type KeyStore = keyStores.KeyStore
-type NearConfig = {
-  keyStore?: KeyStore
-  deps?: { keyStore: KeyStore }
-  helperUrl?: string
-  masterAccount?: string
-  walletUrl?: string
-  networkId: string
-  nodeUrl: string
-}
-type ConnectConfig = NearConfig & {
-  keyPath?: string
-}
-type NearAccountConfig = NearConfig & {
-  deps: { keyStore: KeyStore }
-  masterAccount: string
-  masterAccessKey: string
-}
-
-function getConfig(env: string): ConnectConfig {
-  switch (env) {
-    case 'production':
-    case 'mainnet':
-      return {
-        networkId: 'mainnet',
-        nodeUrl: 'https://rpc.mainnet.near.org',
-        walletUrl: 'https://wallet.near.org',
-        helperUrl: 'https://helper.mainnet.near.org',
-      }
-    case 'development':
-    case 'testnet':
-      return {
-        networkId: 'default',
-        nodeUrl: 'https://rpc.testnet.near.org',
-        walletUrl: 'https://wallet.testnet.near.org',
-        helperUrl: 'https://helper.testnet.near.org',
-      }
-    case 'devnet':
-      return {
-        networkId: 'devnet',
-        nodeUrl: 'https://rpc.devnet.near.org',
-        walletUrl: 'https://wallet.devnet.near.org',
-        helperUrl: 'https://helper.devnet.near.org',
-      }
-    case 'betanet':
-      return {
-        networkId: 'betanet',
-        nodeUrl: 'https://rpc.betanet.near.org',
-        walletUrl: 'https://wallet.betanet.near.org',
-        helperUrl: 'https://helper.betanet.near.org',
-      }
-    case 'local':
-      return {
-        networkId: 'local',
-        nodeUrl: 'http://localhost:3030',
-        keyPath: `${process.env.HOME}/.near/validator_key.json`,
-        walletUrl: 'http://localhost:4000/wallet',
-      }
-    default:
-      throw Error(
-        `Unknown environment '${env}'. Can be configured in src/config.js.`,
-      )
+// Custom error for required env variable.
+export class RequiredEnvError extends Error {
+  constructor(name: string) {
+    super(`Please set the required env ${name}.`)
+    this.name = RequiredEnvError.name
   }
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-export const cloneWithoutSecrets = (config: NearConfig): NearConfig =>
-  (({ keyStore, deps, ...o }) => o)(config)
-
-export const configFromEnv = (
-  env: string | undefined,
-  accountId: string,
-  pk: string,
-): NearAccountConfig => {
-  const config = getConfig(env || DEFAULT_ENV_NODE_ENV)
-  return configFrom(config, accountId, pk)
+/**
+ * Get variable from environment
+ * @param name The name of environment variable
+ * @throws {RequiredEnvError} Will throw an error if environment variable is not defined.
+ * @returns {string}
+ */
+export const getRequiredEnv = (name: string): string => {
+  if (!process.env[name]) throw new RequiredEnvError(name)
+  return process.env[name] || ''
 }
 
-export const configFrom = (
-  connectConfig: ConnectConfig,
-  accountId: string,
-  pk: string,
-): NearAccountConfig => {
-  const keyPair = KeyPair.fromString(pk)
-  const { networkId } = connectConfig
-  const keyStore = new SingleKeyStore(networkId, accountId, keyPair)
-
-  return {
-    ...connectConfig,
-    deps: { keyStore },
-    masterAccount: accountId,
-    masterAccessKey: keyPair.getPublicKey().toString(),
+export const connectionConfig = (): NearAccountConfig => {
+  const { env } = process
+  const accountId = getRequiredEnv(ENV_ACCOUNT_ID)
+  const pk = getRequiredEnv(ENV_PRIVATE_KEY)
+  if (env[ENV_NETWORK_ID] && env[ENV_NODE_URL]) {
+    const connectConfig = {
+      networkId: env[ENV_NETWORK_ID] as string,
+      nodeUrl: env[ENV_NODE_URL] as string,
+    }
+    return configFrom(connectConfig, accountId, pk)
   }
+  return configFromEnv(process.env[ENV_NODE_ENV], accountId, pk)
 }
