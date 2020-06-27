@@ -1,37 +1,37 @@
 import BN from 'bn.js'
 import * as nearApi from 'near-api-js'
-import { ConnectConfig, NearAccountConfig } from './config'
+import { ConnectConfig, AccountConfig } from './config'
+
+export * from './config'
 
 type Near = nearApi.Near
 type Account = nearApi.Account
 type FinalExecutionOutcome = nearApi.providers.FinalExecutionOutcome
 type ViewOutcome = any
 
-// Initializing connection to the NEAR node.
-export const connect = async (config: ConnectConfig): Promise<Near> =>
-  await nearApi.connect(config)
-
-export const connectWithMasterAccount = async (
-  config: NearAccountConfig,
-): Promise<Account> => {
-  const near = await connect(config)
-  const { masterAccount } = config
-  return await near.account(masterAccount)
-}
-
 export type ContractCall = {
   contractId: string
   methodName: string
   args?: Record<string, unknown>
 }
-
 // Read state API input
 export type View = ContractCall
-
 // Write state API input
 export type Call = ContractCall & {
   gas?: BN
   amount?: BN
+}
+
+// Initialize connection to the NEAR node.
+export const connect = async (config: ConnectConfig): Promise<Near> =>
+  await nearApi.connect(config)
+
+// Initialize connection with account.
+export const connectAccount = async (
+  config: AccountConfig,
+): Promise<Account> => {
+  const near = await connect(config)
+  return await near.account(config.masterAccount)
 }
 
 // View function using NEAR account

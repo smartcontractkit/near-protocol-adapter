@@ -13,4 +13,4 @@ RUN yarn --frozen-lockfile
 
 COPY --chown=node:node . .
 
-CMD [ "node", "-e", "require(\"./dist/index.js\").server()" ]
+CMD [ "yarn", "start:adapter" ]

@@ -2,7 +2,7 @@ import * as nearApi from 'near-api-js'
 import { Requester, Validator } from '@chainlink/external-adapter'
 
 import { connectionConfig } from './config'
-import { connectWithMasterAccount, Call, call } from './near'
+import { connectAccount, Call, call } from './near'
 
 type FinalExecutionOutcome = nearApi.providers.FinalExecutionOutcome
 type JobSpecRequest = { id: string; data: Call }
@@ -30,7 +30,7 @@ export const createRequest = (
     callback(500, Requester.errored(jobRunID, err))
 
   const config = connectionConfig()
-  connectWithMasterAccount(config)
+  connectAccount(config)
     .then((account) => call(account, request.data))
     .then(_handleResponse)
     .catch(_handleError)

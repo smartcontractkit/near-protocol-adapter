@@ -1,11 +1,11 @@
 import { expect } from 'chai'
-import { configFromEnv } from '../../src/near/config'
+import { configFromEnv, EnvType } from '../../src/near'
 
 describe('config', () => {
   const accountId = 'dummy.testnet'
 
   context(`when invalid environment`, () => {
-    const env = 'dummy'
+    const env = 'dummy' as EnvType // force incorrect type
 
     it('throws Error because "Unknown environment"', () => {
       const pk = 'dummy:key'
@@ -42,7 +42,7 @@ describe('config', () => {
     const public_key = 'ed25519:BZGHidhWFSKXUmHo2d6arxeJgthxECyFdgjW4P2GH4J4'
 
     const _testConfig = async (
-      _env: string | undefined,
+      _env: EnvType | undefined,
       _networkId: string,
       _nodeUrl: string,
     ) => {
