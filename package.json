@@ -20,7 +20,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "mocha --exit -r ts-node/register 'test/**/*.test.ts'",
-    "start": "tsc && node dist/app.js"
+    "start": "tsc && node dist/app.js",
+    "start:adapter": "tsc && node -e \"require('./dist/index.js').server()\""
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",

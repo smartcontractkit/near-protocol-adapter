@@ -2,11 +2,11 @@ import express, { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
 
 import { handleNotFound, handleErrors, BadRequest } from './errors'
-import { cloneWithoutSecrets } from './near/config'
 import { connectionConfig, ENV_PORT } from './config'
 import {
+  cloneNoSecrets,
   connect,
-  connectWithMasterAccount,
+  connectAccount,
   ContractCall,
   View,
   Call,
@@ -16,7 +16,7 @@ import {
 
 const config = connectionConfig()
 console.log('NEAR Protocol connection configuration:')
-console.log(cloneWithoutSecrets(config))
+console.log(cloneNoSecrets(config))
 
 const app = express()
 app.use(express.json())
@@ -35,8 +35,7 @@ app.get(
 app.get(
   '/account',
   asyncHandler(async (_, res: Response) => {
-    const { networkId, masterAccount } = config
-    const { keyStore } = config.deps
+    const { networkId, masterAccount, keyStore } = config
     const keyPair = await keyStore.getKey(networkId, masterAccount)
     res.send({
       accountId: masterAccount,
@@ -59,7 +58,7 @@ app.get(
     const input: View = req.body
     validate(input)
 
-    const account = await connectWithMasterAccount(config)
+    const account = await connectAccount(config)
     const result = await view(account, input)
 
     console.log('View result: ', result)
@@ -77,7 +76,7 @@ app.post(
     const input: Call = req.body
     validate(input)
 
-    const account = await connectWithMasterAccount(config)
+    const account = await connectAccount(config)
     const result = await call(account, input)
 
     console.log('Call result: ', result)

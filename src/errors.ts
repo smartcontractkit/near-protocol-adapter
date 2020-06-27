@@ -31,9 +31,9 @@ type ErrorResponse = {
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export const handleNotFound = (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): Response<ErrorResponse> => {
   return res.status(CODE_CLIENT_ERROR_NOT_FOUND).json({
     statusCode: CODE_CLIENT_ERROR_NOT_FOUND,
@@ -46,9 +46,9 @@ export const handleNotFound = (
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export const handleErrors = (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): Response<ErrorResponse> => {
   // Log the error to the console
   console.error(err)

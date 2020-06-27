@@ -16,13 +16,23 @@ type NearConfig = {
 export type ConnectConfig = NearConfig & {
   keyPath?: string
 }
-export type NearAccountConfig = NearConfig & {
+export type AccountConfig = NearConfig & {
+  keyStore: KeyStore
   deps: { keyStore: KeyStore }
   masterAccount: string
   masterAccessKey: string
 }
 
-function getConfig(env: string): ConnectConfig {
+export type EnvType =
+  | 'production'
+  | 'mainnet'
+  | 'development'
+  | 'testnet'
+  | 'devnet'
+  | 'betanet'
+  | 'local'
+
+function getConfig(env: EnvType): ConnectConfig {
   switch (env) {
     case 'production':
     case 'mainnet':
@@ -69,14 +79,14 @@ function getConfig(env: string): ConnectConfig {
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export const cloneWithoutSecrets = (config: NearConfig): NearConfig =>
+export const cloneNoSecrets = (config: NearConfig): NearConfig =>
   (({ keyStore, deps, ...o }) => o)(config)
 
 export const configFromEnv = (
-  env: string | undefined,
+  env: EnvType | undefined,
   accountId: string,
   pk: string,
-): NearAccountConfig => {
+): AccountConfig => {
   const config = getConfig(env || DEFAULT_ENV_NODE_ENV)
   return configFrom(config, accountId, pk)
 }
@@ -85,13 +95,14 @@ export const configFrom = (
   connectConfig: ConnectConfig,
   accountId: string,
   pk: string,
-): NearAccountConfig => {
+): AccountConfig => {
   const keyPair = KeyPair.fromString(pk)
   const { networkId } = connectConfig
   const keyStore = new SingleKeyStore(networkId, accountId, keyPair)
 
   return {
     ...connectConfig,
+    keyStore,
     deps: { keyStore },
     masterAccount: accountId,
     masterAccessKey: keyPair.getPublicKey().toString(),
