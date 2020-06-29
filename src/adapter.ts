@@ -8,12 +8,17 @@ type FinalExecutionOutcome = nearApi.providers.FinalExecutionOutcome
 type JobSpecRequest = { id: string; data: Call }
 type Callback = (statusCode: number, data: Record<string, unknown>) => void
 
+const inputParams = {
+  contractId: true,
+  methodName: true,
+}
+
 // Export function to integrate with Chainlink node
 export const createRequest = (
   request: JobSpecRequest,
   callback: Callback,
 ): void => {
-  const validator = new Validator(callback, request, {})
+  const validator = new Validator(callback, request, inputParams)
   const jobRunID = validator.validated.id
 
   const _handleResponse = (out: FinalExecutionOutcome) =>

@@ -44,6 +44,7 @@ app.get(
   }),
 )
 
+// TODO: improve Validator from '@chainlink/external-adapter' to work synchronously and use it here
 // Validate API input
 const validate = (input: ContractCall) => {
   const { contractId, methodName } = input
