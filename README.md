@@ -80,7 +80,23 @@ yarn start
 
 ## API
 
-### HTTP GET `/` endpoint
+This service can be started as a standalone service or as a Chainlink node adapter.
+
+To start the service as standalone service:
+
+```bash
+yarn start
+```
+
+To start the service as Chainlink node adapter:
+
+```bash
+yarn start:adapter
+```
+
+The standalone service exposes all endpoints discussed next, while the service started as a [Chainlink node adapter](#chainlink-node-integration) exposes just one endpoint `POST /call`, but it's mapped as root endpoint `POST /`.
+
+### HTTP `GET /` endpoint
 
 Read NEAR network connection status.
 
@@ -113,7 +129,7 @@ Output:
 }
 ```
 
-### HTTP GET `/account` endpoint
+### HTTP `GET /account` endpoint
 
 Read configured NEAR account.
 
@@ -126,7 +142,7 @@ Output:
 }
 ```
 
-### HTTP GET `/view` endpoint
+### HTTP `GET /view` endpoint
 
 Read contract state from NEAR network.
 
@@ -149,7 +165,9 @@ Output:
 }
 ```
 
-### HTTP POST `/call` endpoint
+### HTTP `POST /call` endpoint
+
+**Available as `POST /` when started as Chainlink node adapter**
 
 Send transaction and write state to the NEAR network.
 

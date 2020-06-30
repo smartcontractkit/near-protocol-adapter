@@ -2,7 +2,7 @@ import * as nearApi from 'near-api-js'
 import { Requester, Validator } from '@chainlink/external-adapter'
 
 import { connectionConfig } from './config'
-import { connectAccount, Call, call } from './near'
+import { connectAccount, Call, call, logConfig } from './near'
 
 type FinalExecutionOutcome = nearApi.providers.FinalExecutionOutcome
 type JobSpecRequest = { id: string; data: Call }
@@ -12,6 +12,9 @@ const inputParams = {
   contractId: true,
   methodName: true,
 }
+
+const config = connectionConfig()
+logConfig(config)
 
 // Export function to integrate with Chainlink node
 export const createRequest = (
@@ -34,9 +37,8 @@ export const createRequest = (
   const _handleError = (err: Error) =>
     callback(500, Requester.errored(jobRunID, err))
 
-  const config = connectionConfig()
   connectAccount(config)
-    .then((account) => call(account, request.data))
+    .then((account) => call(account, validator.validated.data))
     .then(_handleResponse)
     .catch(_handleError)
 }
