@@ -4,7 +4,6 @@ import asyncHandler from 'express-async-handler'
 import { handleNotFound, handleErrors, BadRequest } from './errors'
 import { connectionConfig, ENV_PORT } from './config'
 import {
-  cloneNoSecrets,
   connect,
   connectAccount,
   ContractCall,
@@ -12,11 +11,11 @@ import {
   Call,
   view,
   call,
+  logConfig,
 } from './near'
 
 const config = connectionConfig()
-console.log('NEAR Protocol connection configuration:')
-console.log(cloneNoSecrets(config))
+logConfig(config)
 
 const app = express()
 app.use(express.json())

@@ -79,8 +79,13 @@ function getConfig(env: EnvType): ConnectConfig {
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export const cloneNoSecrets = (config: NearConfig): NearConfig =>
+const cloneNoSecrets = (config: NearConfig): NearConfig =>
   (({ keyStore, deps, ...o }) => o)(config)
+
+export const logConfig = (config: AccountConfig): void => {
+  console.log('NEAR Protocol connection configuration:')
+  console.log(cloneNoSecrets(config))
+}
 
 export const configFromEnv = (
   env: EnvType | undefined,
