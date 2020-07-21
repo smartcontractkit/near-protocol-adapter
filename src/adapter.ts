@@ -1,19 +1,69 @@
+import BN from 'bn.js'
 import * as nearApi from 'near-api-js'
 import { Requester, Validator } from '@chainlink/external-adapter'
 
-import { connectionConfig } from './config'
-import { connectAccount, Call, call, logConfig } from './near'
+import {
+  connectionConfig,
+  getRequiredEnv,
+  ENV_CONTRACT_ID,
+  ENV_METHOD_NAME,
+  ENV_GAS,
+  ENV_AMOUNT,
+  DEFAULT_ENV_GAS,
+  DEFAULT_ENV_AMOUNT,
+} from './config'
+import { connectAccount, Call, call, logConfig, AccountConfig } from './near'
 
+type Base64String = string
+type RequestFulfillmentArgs = {
+  account: string
+  nonce: string
+  payment: string
+  callback_address: string
+  callback_method: string
+  expiration: string
+}
+
+// ChainlinkRequestFulfillmentArgs contains the input arguments received from the Chainlink node
+type ChainlinkRequestFulfillmentArgs = RequestFulfillmentArgs & {
+  value: number
+}
+// OracleRequestFulfillmentArgs contains the arguments for oracle 'fulfill_request' function
+type OracleRequestFulfillmentArgs = RequestFulfillmentArgs & {
+  data: Base64String
+}
+type JobSpecRequest = { id: string; data: ChainlinkRequestFulfillmentArgs }
 type FinalExecutionOutcome = nearApi.providers.FinalExecutionOutcome
-type JobSpecRequest = { id: string; data: Call }
 type Callback = (statusCode: number, data: Record<string, unknown>) => void
 
 const inputParams = {
-  contractId: true,
-  methodName: true,
+  account: true,
+  nonce: true,
+  payment: true,
+  callback_address: true,
+  callback_method: true,
+  expiration: true,
+  value: ['result', 'value'],
 }
 
-const config = connectionConfig()
+type AdapterConfig = AccountConfig & {
+  adapter: {
+    contractId: string
+    methodName: string
+    gas: BN
+    amount: BN
+  }
+}
+
+const config: AdapterConfig = {
+  ...connectionConfig(),
+  adapter: {
+    contractId: getRequiredEnv(ENV_CONTRACT_ID),
+    methodName: getRequiredEnv(ENV_METHOD_NAME),
+    gas: new BN(process.env[ENV_GAS] || DEFAULT_ENV_GAS),
+    amount: new BN(process.env[ENV_AMOUNT] || DEFAULT_ENV_AMOUNT),
+  },
+}
 logConfig(config)
 
 // Export function to integrate with Chainlink node
@@ -37,8 +87,27 @@ export const createRequest = (
   const _handleError = (err: Error) =>
     callback(500, Requester.errored(jobRunID, err))
 
+  const { data } = validator.validated
+  const args: OracleRequestFulfillmentArgs = {
+    account: data.account,
+    nonce: data.nonce,
+    payment: data.payment,
+    callback_address: data.callback_address,
+    callback_method: data.callback_method,
+    expiration: data.expiration,
+    data: Buffer.from(data.value.toString()).toString('base64'),
+  }
+
+  const input: Call = {
+    contractId: config.adapter.contractId,
+    methodName: config.adapter.methodName,
+    args,
+    gas: config.adapter.gas,
+    amount: config.adapter.amount,
+  }
+
   connectAccount(config)
-    .then((account) => call(account, validator.validated.data))
+    .then((account) => call(account, input))
     .then(_handleResponse)
     .catch(_handleError)
 }
