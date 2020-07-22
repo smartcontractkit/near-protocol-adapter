@@ -4,17 +4,17 @@ import { configFrom, configFromEnv, AccountConfig, EnvType } from './near'
 export const ENV_NODE_ENV = 'NODE_ENV'
 
 // NEAR connection config
-export const ENV_PORT = 'EA_PORT'
-export const ENV_NETWORK_ID = 'EA_NETWORK_ID'
-export const ENV_NODE_URL = 'EA_NODE_URL'
-export const ENV_ACCOUNT_ID = 'EA_ACCOUNT_ID'
-export const ENV_PRIVATE_KEY = 'EA_PRIVATE_KEY'
+export const ENV_PORT = 'PORT'
+export const ENV_NETWORK_ID = 'NETWORK_ID'
+export const ENV_NODE_URL = 'NODE_URL'
+export const ENV_ACCOUNT_ID = 'ACCOUNT_ID'
+export const ENV_PRIVATE_KEY = 'PRIVATE_KEY'
 
 // Chainlink adapter config
-export const ENV_CONTRACT_ID = 'EA_CONTRACT_ID'
-export const ENV_METHOD_NAME = 'EA_METHOD_NAME'
-export const ENV_GAS = 'EA_GAS'
-export const ENV_AMOUNT = 'EA_AMOUNT'
+export const ENV_CONTRACT_ID = 'CONTRACT_ID'
+export const ENV_METHOD_NAME = 'METHOD_NAME'
+export const ENV_GAS = 'GAS'
+export const ENV_AMOUNT = 'AMOUNT'
 
 // Chainlink adapter config defaults
 export const DEFAULT_ENV_GAS = new BN('300000000000000')

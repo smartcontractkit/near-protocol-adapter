@@ -34,22 +34,22 @@ In the project root, login with `near-shell` by following the instructions after
 near login
 ```
 
-This step is required to get to the NEAR account private key which can be found at `~/.near-credentials/default/${EA_ACCOUNT_ID}.json`:
+This step is required to get to the NEAR account private key which can be found at `~/.near-credentials/default/${ACCOUNT_ID}.json`:
 
 ```json
-{ "account_id": "${EA_ACCOUNT_ID}", "private_key": "ed25519:..." }
+{ "account_id": "${ACCOUNT_ID}", "private_key": "ed25519:..." }
 ```
 
 ## Start
 
 Supported environment variables:
 
-- EA_ACCOUNT_ID: NEAR account that this service will use
-- EA_PRIVATE_KEY: NEAR account private key
-- EA_PORT: (optional) defaults to `3000`
+- ACCOUNT_ID: NEAR account that this service will use
+- PRIVATE_KEY: NEAR account private key
+- PORT: (optional) defaults to `3000`
 - NODE_ENV: (optional) one of `[production|mainnet|development|testnet|devnet|betanet|local]`, defaults to `development`
-- EA_NETWORK_ID: (optional) custom network id, `EA_NODE_URL` must also be set
-- EA_NODE_URL: (optional) custom node url, `EA_NETWORK_ID` must also be set
+- NETWORK_ID: (optional) custom network id, `NODE_URL` must also be set
+- NODE_URL: (optional) custom node url, `NETWORK_ID` must also be set
 
 Set the required environment, and run from the project root:
 
@@ -61,8 +61,8 @@ Alternatively you can set the environment inline:
 
 ```bash
 env \
-  EA_ACCOUNT_ID=dummy.testnet \
-  EA_PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+  ACCOUNT_ID=dummy.testnet \
+  PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
   NODE_ENV=testnet \
 yarn start
 ```
@@ -71,10 +71,10 @@ Or for a custom connection:
 
 ```bash
 env \
-  EA_ACCOUNT_ID=dummy.acmenet \
-  EA_PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
-  EA_NETWORK_ID=acmenet \
-  EA_NODE_URL=https://rpc.acmenet.acme.org \
+  ACCOUNT_ID=dummy.acmenet \
+  PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+  NETWORK_ID=acmenet \
+  NODE_URL=https://rpc.acmenet.acme.org \
 yarn start
 ```
 
@@ -349,21 +349,21 @@ The Chainlink node expects a specific adapter API - we only expose the call func
 
 Chainlink adapter requires and supports additional environment variables:
 
-- EA_CONTRACT_ID: NEAR account where the contract is deployed
-- EA_METHOD_NAME: Method name that will be called by the adapter
-- EA_GAS: (optional) Gas sent with the transaction, defaults to `300000000000000`
-- EA_AMOUNT: (optional) Amount sent with the transaction, defaults to `0`
+- CONTRACT_ID: NEAR account where the contract is deployed
+- METHOD_NAME: Method name that will be called by the adapter
+- GAS: (optional) Gas sent with the transaction, defaults to `300000000000000`
+- AMOUNT: (optional) Amount sent with the transaction, defaults to `0`
 
 To start the service as Chainlink node adapter:
 
 ```bash
 env \
  NODE_ENV=testnet \
- EA_PORT=3000 \
- EA_ACCOUNT_ID=dummy.testnet \
- EA_PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
- EA_CONTRACT_ID=oracle.oracle.testnet \
- EA_METHOD_NAME=fulfill_request \
+ PORT=3000 \
+ ACCOUNT_ID=dummy.testnet \
+ PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+ CONTRACT_ID=oracle.oracle.testnet \
+ METHOD_NAME=fulfill_request \
 yarn start:adapter
 ```
 
@@ -380,11 +380,11 @@ docker run -d \
     --name near-protocol-adapter \
     -p 3000:3000 \
     -e NODE_ENV=testnet \
-    -e EA_PORT=3000 \
-    -e EA_ACCOUNT_ID=dummy.testnet \
-    -e EA_PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
-    -e EA_CONTRACT_ID=oracle.oracle.testnet \
-    -e EA_METHOD_NAME=fulfill_request \
+    -e PORT=3000 \
+    -e ACCOUNT_ID=dummy.testnet \
+    -e PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+    -e CONTRACT_ID=oracle.oracle.testnet \
+    -e METHOD_NAME=fulfill_request \
     near-protocol-adapter
 ```
 
