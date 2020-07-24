@@ -25,5 +25,12 @@ jobs:
           yarn build
           yarn test
       - name: yarn package
-        run: |
-          yarn package
+        run: yarn package
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: near-protocol-adapter-${{steps.package-version.outputs.current-version}}
+          path: near-protocol-adapter-${{steps.package-version.outputs.current-version}}.zip
