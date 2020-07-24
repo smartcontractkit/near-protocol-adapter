@@ -11,20 +11,20 @@
   ],
   "main": "./dist/index.js",
   "repository": {
-    "url": "https://github.com/smartcontractkit/near-protocol-write-adapter",
+    "url": "https://github.com/smartcontractkit/near-protocol-adapter",
     "type": "git"
   },
   "author": "Kristijan Rebernisak <kristijan.rebernisak@smartcontract.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn && tsc",
+    "build:package": "yarn build && yarn package",
+    "package": "cross-var bestzip $npm_package_name-$npm_package_version.zip dist/ node_modules/* package.json",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "mocha --exit -r ts-node/register 'test/**/*.test.ts'",
     "start": "node dist/app.js",
-    "start:adapter": "node -e \"require('./dist/index.js').server()\"",
-    "package": "cross-var bestzip $npm_package_name-$npm_package_version.zip dist/ node_modules/* package.json",
-    "deploy": "yarn && yarn build && yarn package"
+    "start:adapter": "node -e \"require('./dist/index.js').server()\""
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
