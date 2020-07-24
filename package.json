@@ -1,7 +1,7 @@
 {
-  "name": "near-protocol-write-adapter",
+  "name": "near-protocol-adapter",
   "version": "0.0.1",
-  "description": "NEAR Protocol write adapter to be used by a Chainlink node.",
+  "description": "NEAR Protocol adapter to be used by a Chainlink node.",
   "keywords": [
     "Chainlink",
     "LINK",
@@ -9,7 +9,7 @@
     "blockchain",
     "oracle"
   ],
-  "main": "index.js",
+  "main": "./dist/index.js",
   "repository": {
     "url": "https://github.com/smartcontractkit/near-protocol-write-adapter",
     "type": "git"
@@ -21,8 +21,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "mocha --exit -r ts-node/register 'test/**/*.test.ts'",
-    "start": "yarn build && node dist/app.js",
-    "start:adapter": "yarn build && node -e \"require('./dist/index.js').server()\"",
+    "start": "node dist/app.js",
+    "start:adapter": "node -e \"require('./dist/index.js').server()\"",
     "package": "cross-var bestzip $npm_package_name-$npm_package_version.zip dist/ node_modules/* package.json",
     "deploy": "yarn && yarn build && yarn package"
   },
