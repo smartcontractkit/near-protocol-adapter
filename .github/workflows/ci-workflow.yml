@@ -24,8 +24,8 @@ jobs:
           yarn lint
           yarn build
           yarn test
-      - name: yarn package
-        run: yarn package
+      - name: yarn pack:zip
+        run: yarn pack:zip
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
