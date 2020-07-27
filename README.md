@@ -78,7 +78,7 @@ env \
 yarn start
 ```
 
-This service can be started as a standalone service or as a [Chainlink node adapter](#chainlink-node-integration).
+This service can be started as a standalone service or as a **[Chainlink node adapter](#chainlink-node-integration)**.
 
 ## API
 
@@ -367,40 +367,19 @@ env \
 yarn start:adapter
 ```
 
-To deploy, build the Docker image:
-
-```bash
-docker build -t near-protocol-adapter .
-```
-
-Run the Docker container:
-
-```bash
-docker run -d \
-    --name near-protocol-adapter \
-    -p 3000:3000 \
-    -e NODE_ENV=testnet \
-    -e PORT=3000 \
-    -e ACCOUNT_ID=dummy.testnet \
-    -e PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
-    -e CONTRACT_ID=oracle.oracle.testnet \
-    -e METHOD_NAME=fulfill_request \
-    near-protocol-adapter
-```
-
-In this configuration the `/` endpoint expects a slightly different input, we need to include the job spec id:
+In this configuration the `/` endpoint connects directly to [NEAR oracle contract](https://github.com/smartcontractkit/near-protocol-contracts/), and expects a slightly different input. We need to include the job spec id:
 
 ```json
 {
   "id": 1, // job spec id
-  "data": {...} // input to our call function (as before)
+  "data": {...} // input to our call function (specified in the env)
 }
 ```
 
-For example, incrementing a [counter](https://github.com/near-examples/counter):
+Example for adapter set up to call the `fulfill_request` function:
 
 ```json
-echo '{"id": 1, "data": {"contractId": "counter.testnet", "methodName": "incrementCounter", "args": {"value": 1}, "gas": 5000000000000, "amount": 50}}' | http POST :3000/
+echo '{"id": 1, "data": {"nonce":"1", "account": "client.oracle.testnet", "callback_address": "client.oracle.testnet", "callback_method": "token_price_callback", "payment":"10", "expiration":"1906293427246306700", "value": 17}}' | http POST :3000/
 ```
 
 Output:
@@ -415,3 +394,56 @@ Output:
   "statusCode": 200
 }
 ```
+
+### Deployment
+
+To deploy a container, build the Docker image:
+
+```bash
+docker build -t near-protocol-adapter .
+```
+
+Run the Docker container:
+
+```bash
+docker run -d \
+  --name near-protocol-adapter \
+  -p 3000:3000 \
+  -e NODE_ENV=testnet \
+  -e PORT=3000 \
+  -e ACCOUNT_ID=dummy.testnet \
+  -e PRIVATE_KEY=ed25519:3Zo9bWRC7vUoDHMaXdMd6osajUktbgGWxL3P89QxR8VguVPnFa7BXd5brw6tBa6RASn8YCVjPgkhpujnorCF7FR2 \
+  -e CONTRACT_ID=oracle.oracle.testnet \
+  -e METHOD_NAME=fulfill_request \
+  near-protocol-adapter
+```
+
+#### Serverless deployment
+
+Package the adapter:
+
+```json
+yarn build:package
+```
+
+#### Install to AWS Lambda
+
+- In Lambda Functions, create function
+- On the Create function page:
+  - Give the function a name
+  - Use Node.js 12.x for the runtime
+  - Choose an existing role or create a new one
+  - Click Create Function
+- Under Function code, select "Upload a .zip file" from the Code entry type drop-down
+- Click Upload and select the `near-protocol-adapter-0.0.1.zip` file
+- Handler should be set as `dist/index.handler`
+- Add the environment variables as required
+- Save
+
+#### Install to GCP
+
+- In Functions, create a new function, choose to ZIP upload
+- Click Browse and select the `near-protocol-adapter-0.0.1.zip` file
+- Select a Storage Bucket to keep the zip in
+- Function to execute: gcpservice
+- Click More, add the environment variables as required
