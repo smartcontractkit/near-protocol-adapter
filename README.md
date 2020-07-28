@@ -379,7 +379,7 @@ In this configuration the `/` endpoint connects directly to [NEAR oracle contrac
 Example for adapter set up to call the `fulfill_request` function:
 
 ```json
-echo '{"id": 1, "data": {"nonce":"1", "account": "client.oracle.testnet", "callback_address": "client.oracle.testnet", "callback_method": "token_price_callback", "payment":"10", "expiration":"1906293427246306700", "value": 17}}' | http POST :3000/
+echo '{"id": 1, "data": {"nonce":"1", "account": "client.oracle.testnet", "value": 17}}' | http POST :3000/
 ```
 
 Output:
