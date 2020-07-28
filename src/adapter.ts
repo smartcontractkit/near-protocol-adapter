@@ -18,10 +18,6 @@ type Base64String = string
 type RequestFulfillmentArgs = {
   account: string
   nonce: string
-  payment: string
-  callback_address: string
-  callback_method: string
-  expiration: string
 }
 
 // ChainlinkRequestFulfillmentArgs contains the input arguments received from the Chainlink node
@@ -39,10 +35,6 @@ type Callback = (statusCode: number, data: Record<string, unknown>) => void
 const inputParams = {
   account: true,
   nonce: true,
-  payment: true,
-  callback_address: true,
-  callback_method: true,
-  expiration: true,
   value: ['result', 'value'],
 }
 
@@ -91,10 +83,6 @@ export const createRequest = (
   const args: OracleRequestFulfillmentArgs = {
     account: data.account,
     nonce: data.nonce,
-    payment: data.payment,
-    callback_address: data.callback_address,
-    callback_method: data.callback_method,
-    expiration: data.expiration,
     data: Buffer.from(data.value.toString()).toString('base64'),
   }
 
