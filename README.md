@@ -24,11 +24,11 @@ yarn install
 ### Prerequisite
 
 - NEAR account: Please create one with [NEAR Wallet](https://wallet.nearprotocol.com).
-- NEAR Shell: Please install it following the [NEAR docs instructions](https://docs.near.org/docs/development/near-shell).
+- NEAR CLI: Please install it following the [NEAR docs instructions](https://docs.near.org/docs/development/near-cli).
 
 ### NEAR login
 
-In the project root, login with `near-shell` by following the instructions after this command:
+In the project root, login with `near-cli` by following the instructions after this command:
 
 ```bash
 near login
@@ -231,7 +231,7 @@ For this test we are going to use [NEAR counter example](https://github.com/near
 Please follow their instructions to:
 
 - Set up a new NEAR account where the contract will be deployed
-- Login to NEAR Shell with your new account
+- Login to NEAR CLI with your new account
 - Deploy the contract
 
 #### Step 2: Interact with contracts
