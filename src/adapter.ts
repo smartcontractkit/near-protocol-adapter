@@ -77,7 +77,7 @@ export const createRequest = (
     )
 
   const _handleError = (err: Error) =>
-    callback(500, Requester.errored(jobRunID, err))
+    callback(500, Requester.errored(jobRunID, err.message))
 
   const { data } = validator.validated
   const args: OracleRequestFulfillmentArgs = {
